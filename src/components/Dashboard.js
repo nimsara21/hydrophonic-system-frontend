@@ -44,19 +44,25 @@ const Dashboard = () => {
         {/* Sensor Data Card */}
         <Grid item xs={12} md={6}>
           <Card style={{ backgroundColor: '#ffffff', borderRadius: 8, boxShadow: '0px 4px 12px rgba(0,0,0,0.1)' }}>
-            <CardContent>
-              <Typography variant="h5" style={{ marginBottom: 10 }}>
+          <CardContent>
+            <Typography variant="h5" style={{ marginBottom: 10 }}>
                 Current Sensor Readings
-              </Typography>
-              <Paper elevation={3} style={{ padding: 20, marginBottom: 20 }}>
+            </Typography>
+            <Paper elevation={3} style={{ padding: 20, marginBottom: 20 }}>
                 <Typography variant="h6">pH Level: {sensorData.pH}</Typography>
                 <Typography variant="h6">Water Level: {sensorData.waterLevel} %</Typography>
                 <Typography variant="h6">Humidity: {sensorData.humidity} %</Typography>
-              </Paper>
-              <Button variant="contained" color="primary" onClick={handleRefresh}>
+                <Typography variant="h6">Grow Light Cycle: {sensorData.growLightCycle}</Typography>
+                <Typography variant="h6">EC Water Quality: {sensorData.ecWaterQuality} mS/cm</Typography>
+                <Typography variant="h6">Air Temperature: {sensorData.temperature} °C</Typography>
+                <Typography variant="h6">Water Temperature: {sensorData.waterTemperature} °C</Typography>
+                <Typography variant="h6">Water Pump Cycle: {sensorData.waterPumpCycle}</Typography>
+            </Paper>
+            <Button variant="contained" color="primary" onClick={handleRefresh}>
                 Refresh Data
-              </Button>
+            </Button>
             </CardContent>
+
           </Card>
         </Grid>
 

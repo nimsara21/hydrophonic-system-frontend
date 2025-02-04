@@ -11,21 +11,42 @@ const SensorChart = () => {
     datasets: [
       {
         label: 'pH Level',
-        data: [7.1, 7.3, 7.0, 7.2, 7.1], // Example pH data
+        data: [7.1, 7.3, 7.0, 7.2, 7.1],
         borderColor: 'rgb(75, 192, 192)',
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         fill: true,
       },
       {
         label: 'Water Level (%)',
-        data: [80, 75, 70, 80, 85], // Example water level data
+        data: [80, 75, 70, 80, 85],
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         fill: true,
       },
+      {
+        label: 'EC Water Quality (mS/cm)',
+        data: [1.5, 1.8, 1.7, 1.9, 2.0],
+        borderColor: 'rgb(54, 162, 235)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        fill: true,
+      },
+      {
+        label: 'Air Temperature (°C)',
+        data: [24, 25, 26, 24, 23],
+        borderColor: 'rgb(255, 206, 86)',
+        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+        fill: true,
+      },
+      {
+        label: 'Water Temperature (°C)',
+        data: [21, 22, 22, 23, 21],
+        borderColor: 'rgb(153, 102, 255)',
+        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+        fill: true,
+      },
     ],
   };
-
+  
   const options = {
     responsive: true,
     plugins: {
