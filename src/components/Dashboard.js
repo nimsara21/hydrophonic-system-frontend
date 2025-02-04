@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Grid, CircularProgress, Card, CardContent, Typography, Paper, Box, Button, Snackbar, Alert } from '@mui/material';
-import { fetchSensorData } from '../redux/hydroponicSlice';
-import SensorChart from './SensorChart';
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Grid, CircularProgress, Card, CardContent, Typography, Paper, Box, Button, Snackbar, Alert } from "@mui/material";
+import { fetchSensorData } from "../redux/hydroponicSlice";
+import SensorChart from "./SensorChart";
+import ControlPanel from "./ControlPanel";
+import { Opacity, LightMode, Science, ElectricBolt, EvStation, WaterDrop } from "@mui/icons-material";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -18,7 +20,7 @@ const Dashboard = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (status === 'succeeded') {
+    if (status === "succeeded") {
       setOpenSnackbar(true);
     }
   }, [status]);
@@ -31,8 +33,17 @@ const Dashboard = () => {
     setOpenSnackbar(false);
   };
 
+  const sensorReadings = [
+    { label: "pH Level", value: `${sensorData.pH}`, icon: <Science fontSize="large" />, color: "#4CAF50" },
+    { label: "Water Level", value: `${sensorData.waterLevel} %`, icon: <Opacity fontSize="large" />, color: "#1E88E5" },
+    { label: "Humidity", value: `${sensorData.humidity} %`, icon: <WaterDrop fontSize="large" />, color: "#0288D1" },
+    { label: "Temperature", value: `${sensorData.temperature}°C`, icon: <LightMode fontSize="large" />, color: "#FFB300" },
+    { label: "Water Temp", value: `${sensorData.waterTemp}°C`, icon: <EvStation fontSize="large" />, color: "#F4511E" },
+    { label: "Grow Light Cycle", value: `${sensorData.growLightCycle} Hrs`, icon: <ElectricBolt fontSize="large" />, color: "#FF4081" },
+  ];
+
   return (
-    <Box style={{ padding: 20, backgroundColor: '#f4f6f8' }}>
+    <Box sx={{ padding: 3, backgroundColor: "#f4f6f8" }}>
       {/* Snackbar for Success Notification */}
       <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
         <Alert onClose={handleCloseSnackbar} severity="success">
@@ -40,51 +51,46 @@ const Dashboard = () => {
         </Alert>
       </Snackbar>
 
-      <Grid container spacing={4}>
-        {/* Sensor Data Card */}
-        <Grid item xs={12} md={6}>
-          <Card style={{ backgroundColor: '#ffffff', borderRadius: 8, boxShadow: '0px 4px 12px rgba(0,0,0,0.1)' }}>
-          <CardContent>
-            <Typography variant="h5" style={{ marginBottom: 10 }}>
-                Current Sensor Readings
-            </Typography>
-            <Paper elevation={3} style={{ padding: 20, marginBottom: 20 }}>
-                <Typography variant="h6">pH Level: {sensorData.pH}</Typography>
-                <Typography variant="h6">Water Level: {sensorData.waterLevel} %</Typography>
-                <Typography variant="h6">Humidity: {sensorData.humidity} %</Typography>
-                <Typography variant="h6">Grow Light Cycle: {sensorData.growLightCycle}</Typography>
-                <Typography variant="h6">EC Water Quality: {sensorData.ecWaterQuality} mS/cm</Typography>
-                <Typography variant="h6">Air Temperature: {sensorData.temperature} °C</Typography>
-                <Typography variant="h6">Water Temperature: {sensorData.waterTemperature} °C</Typography>
-                <Typography variant="h6">Water Pump Cycle: {sensorData.waterPumpCycle}</Typography>
-            </Paper>
-            <Button variant="contained" color="primary" onClick={handleRefresh}>
-                Refresh Data
-            </Button>
-            </CardContent>
+      <Grid container spacing={3}>
+        {/* Sensor Data Cards */}
+        {sensorReadings.map((reading, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <Card
+              sx={{
+                backgroundColor: reading.color,
+                borderRadius: 2,
+                boxShadow: "0px 4px 12px rgba(0,0,0,0.2)",
+                textAlign: "center",
+                color: "white",
+                transition: "transform 0.3s ease-in-out",
+                "&:hover": { transform: "scale(1.05)" },
+              }}
+            >
+              <CardContent>
+                {reading.icon}
+                <Typography variant="h6" sx={{ marginTop: 1 }}>
+                  {reading.label}
+                </Typography>
+                <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                  {reading.value}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
 
-          </Card>
-        </Grid>
+
 
         {/* Sensor Chart */}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           <SensorChart />
         </Grid>
-
-        {/* Real-time Updates Info */}
-        <Grid item xs={12} md={12}>
-          {status === 'loading' ? (
-            <Box display="flex" justifyContent="center" alignItems="center" height={300}>
-              <CircularProgress />
-            </Box>
-          ) : (
-            <Paper elevation={3} style={{ padding: 20 }}>
-              <Typography variant="h6">Real-time Sensor Updates</Typography>
-              <Typography variant="body2">The dashboard is updated every 5 seconds.</Typography>
-            </Paper>
-          )}
-        </Grid>
       </Grid>
+
+              {/* Control Panel */}
+              <Grid item xs={12}>
+          <ControlPanel />
+        </Grid>
     </Box>
   );
 };
