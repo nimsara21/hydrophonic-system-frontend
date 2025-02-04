@@ -5,6 +5,7 @@ import { fetchSensorData } from "../redux/hydroponicSlice";
 import SensorChart from "./SensorChart";
 import ControlPanel from "./ControlPanel";
 import { Opacity, LightMode, Science, ElectricBolt, EvStation, WaterDrop } from "@mui/icons-material";
+import LightPumpChart from "./LightPumpChart";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -24,10 +25,6 @@ const Dashboard = () => {
       setOpenSnackbar(true);
     }
   }, [status]);
-
-  const handleRefresh = () => {
-    dispatch(fetchSensorData());
-  };
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
@@ -52,6 +49,9 @@ const Dashboard = () => {
       </Snackbar>
 
       <Grid container spacing={3}>
+        
+       
+
         {/* Sensor Data Cards */}
         {sensorReadings.map((reading, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
@@ -79,18 +79,32 @@ const Dashboard = () => {
           </Grid>
         ))}
 
-
-
-        {/* Sensor Chart */}
-        <Grid item xs={12}>
-          <SensorChart />
+         {/* Sensor Chart - Full Width on Top */}
+         <Grid item xs={12}>
+          <Paper elevation={3} sx={{ padding: 2 }}>
+            <Typography variant="h6" align="center" gutterBottom>
+              Sensor Readings Over Time
+            </Typography>
+            <SensorChart />
+          </Paper>
         </Grid>
-      </Grid>
 
-              {/* Control Panel */}
-              <Grid item xs={12}>
+        {/* Light & Pump Cycle Chart - Full Width on Second Line */}
+        <Grid item xs={12}>
+          <Paper elevation={3} sx={{ padding: 2 }}>
+            <Typography variant="h6" align="center" gutterBottom>
+              Grow Light & Water Pump Cycle
+            </Typography>
+            <LightPumpChart />
+          </Paper>
+        </Grid>
+
+        {/* Control Panel */}
+        <Grid item xs={12}>
           <ControlPanel />
         </Grid>
+
+      </Grid>
     </Box>
   );
 };

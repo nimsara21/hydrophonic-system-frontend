@@ -58,15 +58,13 @@ const SensorChart = () => {
   };
 
   return (
-    <Card style={{ backgroundColor: '#ffffff', borderRadius: 8, boxShadow: '0px 4px 12px rgba(0,0,0,0.1)' }}>
-      <CardContent>
-        <Typography variant="h5" style={{ marginBottom: 10 }}>
-          Sensor Data Chart
-        </Typography>
-        <Line data={chartData} options={options} />
-      </CardContent>
+    <Card sx={{ p: 1, boxShadow: 1 }}>
+      <Typography variant="body2" mb={1}>Sensor Data</Typography>
+      <Line data={chartData} options={options} />
     </Card>
   );
+  
+  
 };
 
 export default SensorChart;
