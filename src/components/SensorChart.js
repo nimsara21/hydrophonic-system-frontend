@@ -1,70 +1,94 @@
-import React from 'react';
-import { Line } from 'react-chartjs-2';
-import { Card, CardContent, Typography } from '@mui/material';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import React, { useEffect, useState } from "react";
+import { Line } from "react-chartjs-2";
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
+import { getSensorDataOverTime } from "../api/sensorAPI"; // API function to get sensor data over time
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const SensorChart = () => {
+  const [sensorData, setSensorData] = useState(null);
+
+  useEffect(() => {
+    const fetchSensorData = async () => {
+      try {
+        const data = await getSensorDataOverTime();
+        setSensorData(data);
+      } catch (error) {
+        console.error("Error fetching sensor data:", error);
+      }
+    };
+
+    // Initial fetch of sensor data
+    fetchSensorData();
+
+    // Set up polling to fetch data every 5 seconds
+    const interval = setInterval(() => {
+      fetchSensorData();
+    }, 5000); // Adjust the interval time as needed (5 seconds here)
+
+    // Clean up interval on component unmount
+    return () => clearInterval(interval);
+  }, []);
+
+  if (!sensorData) {
+    return <div>Loading sensor data...</div>;
+  }
+
   const chartData = {
-    labels: ['10:00', '10:05', '10:10', '10:15', '10:20'], // Example timestamps
+    labels: sensorData.map((entry) => new Date(entry.createdAt).toLocaleString()),
     datasets: [
       {
-        label: 'pH Level',
-        data: [7.1, 7.3, 7.0, 7.2, 7.1],
-        borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        fill: true,
+        label: "pH Level",
+        data: sensorData.map((entry) => entry.pH),
+        borderColor: "#4CAF50",
+        backgroundColor: "#4CAF50",
+        fill: false,
+        tension: 0.1,
       },
       {
-        label: 'Water Level (%)',
-        data: [80, 75, 70, 80, 85],
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        fill: true,
+        label: "Water Level",
+        data: sensorData.map((entry) => entry.waterLevel),
+        borderColor: "#1E88E5",
+        backgroundColor: "#1E88E5",
+        fill: false,
+        tension: 0.1,
       },
       {
-        label: 'EC Water Quality (mS/cm)',
-        data: [1.5, 1.8, 1.7, 1.9, 2.0],
-        borderColor: 'rgb(54, 162, 235)',
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        fill: true,
+        label: "Humidity",
+        data: sensorData.map((entry) => entry.humidity),
+        borderColor: "#0288D1",
+        backgroundColor: "#0288D1",
+        fill: false,
+        tension: 0.1,
       },
       {
-        label: 'Air Temperature (°C)',
-        data: [24, 25, 26, 24, 23],
-        borderColor: 'rgb(255, 206, 86)',
-        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-        fill: true,
+        label: "Temperature",
+        data: sensorData.map((entry) => entry.temperature),
+        borderColor: "#FFB300",
+        backgroundColor: "#FFB300",
+        fill: false,
+        tension: 0.1,
       },
       {
-        label: 'Water Temperature (°C)',
-        data: [21, 22, 22, 23, 21],
-        borderColor: 'rgb(153, 102, 255)',
-        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-        fill: true,
+        label: "Water Temp",
+        data: sensorData.map((entry) => entry.waterTemp),
+        borderColor: "#F4511E",
+        backgroundColor: "#F4511E",
+        fill: false,
+        tension: 0.1,
+      },
+      {
+        label: "Grow Light Cycle",
+        data: sensorData.map((entry) => entry.growLightCycle),
+        borderColor: "#FF4081",
+        backgroundColor: "#FF4081",
+        fill: false,
+        tension: 0.1,
       },
     ],
   };
-  
-  const options = {
-    responsive: true,
-    plugins: {
-      title: {
-        display: true,
-        text: 'Sensor Data Over Time',
-      },
-    },
-  };
 
-  return (
-    <Card sx={{ p: 1, boxShadow: 1 }}>
-      <Typography variant="body2" mb={1}>Sensor Data</Typography>
-      <Line data={chartData} options={options} />
-    </Card>
-  );
-  
-  
+  return <Line data={chartData} />;
 };
 
 export default SensorChart;

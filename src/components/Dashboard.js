@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Grid, CircularProgress, Card, CardContent, Typography, Paper, Box, Button, Snackbar, Alert } from "@mui/material";
+import { Grid, CircularProgress, Card, CardContent, Typography, Box, Snackbar, Alert, Paper } from "@mui/material";  // <-- Add Paper here
 import { fetchSensorData } from "../redux/hydroponicSlice";
 import SensorChart from "./SensorChart";
 import ControlPanel from "./ControlPanel";
 import { Opacity, LightMode, Science, ElectricBolt, EvStation, WaterDrop } from "@mui/icons-material";
-import LightPumpChart from "./LightPumpChart";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -31,12 +30,12 @@ const Dashboard = () => {
   };
 
   const sensorReadings = [
-    { label: "pH Level", value: `${sensorData.pH}`, icon: <Science fontSize="large" />, color: "#4CAF50" },
-    { label: "Water Level", value: `${sensorData.waterLevel} %`, icon: <Opacity fontSize="large" />, color: "#1E88E5" },
-    { label: "Humidity", value: `${sensorData.humidity} %`, icon: <WaterDrop fontSize="large" />, color: "#0288D1" },
-    { label: "Temperature", value: `${sensorData.temperature}°C`, icon: <LightMode fontSize="large" />, color: "#FFB300" },
-    { label: "Water Temp", value: `${sensorData.waterTemp}°C`, icon: <EvStation fontSize="large" />, color: "#F4511E" },
-    { label: "Grow Light Cycle", value: `${sensorData.growLightCycle} Hrs`, icon: <ElectricBolt fontSize="large" />, color: "#FF4081" },
+    { label: "pH Level", value: `${sensorData[0]?.pH}`, icon: <Science fontSize="large" />, color: "#4CAF50" },
+    { label: "Water Level", value: `${sensorData[0]?.waterLevel} %`, icon: <Opacity fontSize="large" />, color: "#1E88E5" },
+    { label: "Humidity", value: `${sensorData[0]?.humidity} %`, icon: <WaterDrop fontSize="large" />, color: "#0288D1" },
+    { label: "Temperature", value: `${sensorData[0]?.temperature}°C`, icon: <LightMode fontSize="large" />, color: "#FFB300" },
+    { label: "Water Temp", value: `${sensorData[0]?.waterTemp}°C`, icon: <EvStation fontSize="large" />, color: "#F4511E" },
+    { label: "Grow Light Cycle", value: `${sensorData[0]?.growLightCycle} Hrs`, icon: <ElectricBolt fontSize="large" />, color: "#FF4081" },
   ];
 
   return (
@@ -49,9 +48,6 @@ const Dashboard = () => {
       </Snackbar>
 
       <Grid container spacing={3}>
-        
-       
-
         {/* Sensor Data Cards */}
         {sensorReadings.map((reading, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
@@ -79,8 +75,8 @@ const Dashboard = () => {
           </Grid>
         ))}
 
-         {/* Sensor Chart - Full Width on Top */}
-         <Grid item xs={12}>
+        {/* Sensor Chart - Full Width on Top */}
+        <Grid item xs={12}>
           <Paper elevation={3} sx={{ padding: 2 }}>
             <Typography variant="h6" align="center" gutterBottom>
               Sensor Readings Over Time
@@ -89,21 +85,10 @@ const Dashboard = () => {
           </Paper>
         </Grid>
 
-        {/* Light & Pump Cycle Chart - Full Width on Second Line */}
-        <Grid item xs={12}>
-          <Paper elevation={3} sx={{ padding: 2 }}>
-            <Typography variant="h6" align="center" gutterBottom>
-              Grow Light & Water Pump Cycle
-            </Typography>
-            <LightPumpChart />
-          </Paper>
-        </Grid>
-
         {/* Control Panel */}
         <Grid item xs={12}>
           <ControlPanel />
         </Grid>
-
       </Grid>
     </Box>
   );
