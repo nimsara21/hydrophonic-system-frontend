@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Grid, Card, CardContent, Typography, Switch, Box } from "@mui/material";
-import { Opacity, LightMode, Science, ElectricBolt, EvStation, WaterDrop } from "@mui/icons-material";
+import { EvStation, Science, LightMode, ElectricBolt, WaterDrop } from "@mui/icons-material";
+import { getDatabase, ref, onValue, set } from "firebase/database"; // Import necessary functions
 
 const ControlPanel = () => {
   const [controlState, setControlState] = useState({
@@ -12,10 +13,58 @@ const ControlPanel = () => {
     solenoid: false,
   });
 
-  const toggleControl = (key) => {
-    setControlState({ ...controlState, [key]: !controlState[key] });
-    console.log(`Toggled ${key}: ${!controlState[key]}`);
+  const [sensorData, setSensorData] = useState({ ph: 0, ppm: 0, temperature: 0, waterLevel: 0 });
+  const prevState = useRef({ phMotorUp: false, phMotorDown: false, fertilizer: false });
+
+  // Firebase database reference
+  const db = getDatabase();
+
+  // Listen for updates from Firebase
+  useEffect(() => {
+    const dbRef = ref(db, 'systemControl');
+
+    // Listen for updates
+    const listener = onValue(dbRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setControlState(data);
+      }
+    });
+
+    return () => {
+      // Unsubscribe from listener on component unmount
+      listener();
+    };
+  }, [db]);
+
+  const toggleControl = async (key, state) => {
+    try {
+      // Update control state in Firebase
+      const newState = { ...controlState, [key]: state !== undefined ? state : !controlState[key] };
+      await set(ref(db, 'systemControl'), newState);
+      setControlState(newState);
+    } catch (error) {
+      console.error("Error toggling control:", error);
+    }
   };
+
+  // Automatic controls based on sensor data
+  useEffect(() => {
+    if (sensorData.ph > 9 && !prevState.current.phMotorDown) {
+      toggleControl("phMotorDown", true);
+      prevState.current.phMotorDown = true;
+      prevState.current.phMotorUp = false;
+    } else if (sensorData.ph < 7 && !prevState.current.phMotorUp) {
+      toggleControl("phMotorUp", true);
+      prevState.current.phMotorUp = true;
+      prevState.current.phMotorDown = false;
+    }
+
+    if (sensorData.ppm < 300 && !prevState.current.fertilizer) {
+      toggleControl("fertilizer", true);
+      prevState.current.fertilizer = true;
+    }
+  }, [sensorData]);
 
   const controlItems = [
     { key: "waterMotor", label: "Water Motor", icon: <EvStation fontSize="large" />, color: "#1E88E5" },
@@ -51,15 +100,10 @@ const ControlPanel = () => {
                   onChange={() => toggleControl(item.key)}
                   color="default"
                   sx={{
-                    "& .MuiSwitch-switchBase.Mui-checked": {
-                      color: "white",
-                    },
-                    "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-                      backgroundColor: "white",
-                    },
+                    "& .MuiSwitch-switchBase.Mui-checked": { color: "white" },
+                    "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": { backgroundColor: "white" },
                   }}
                 />
-                {/* ON/OFF Text Indicator */}
                 <Typography variant="h6" sx={{ fontWeight: "bold", marginTop: 1 }}>
                   {controlState[item.key] ? "ON" : "OFF"}
                 </Typography>

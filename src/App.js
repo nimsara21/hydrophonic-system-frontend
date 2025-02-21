@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import Dashboard from './components/Dashboard'; // Assuming you have a Dashboard component
 
+
 function App() {
   return (
     <Box
