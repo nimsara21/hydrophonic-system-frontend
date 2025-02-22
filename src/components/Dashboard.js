@@ -30,11 +30,11 @@ const Dashboard = () => {
   };
 
   const sensorReadings = [
-    { label: "Air Temperature", value: `${sensorData.airTemp} °C`, icon: <Science fontSize="large" />, color: "#4CAF50" },
-    { label: "Distance", value: `${sensorData.distance} cm`, icon: <Opacity fontSize="large" />, color: "#1E88E5" },
+    { label: "Air Temperature", value: `${sensorData.airTemp} °C`, icon: <Science fontSize="large" />, color: "#FFB300" },
+    { label: "Water Level", value: `${sensorData.distance} cm`, icon: <Opacity fontSize="large" />, color: "#00bcd4" },
     { label: "Humidity", value: `${sensorData.humidity} %`, icon: <WaterDrop fontSize="large" />, color: "#0288D1" },
-    { label: "Liquid Temperature", value: `${sensorData.liquidTemp} °C`, icon: <LightMode fontSize="large" />, color: "#FFB300" },
-    { label: "pH Level", value: `${sensorData.pH}`, icon: <EvStation fontSize="large" />, color: "#F4511E" },
+    { label: "Liquid Temperature", value: `${sensorData.liquidTemp} °C`, icon: <LightMode fontSize="large" />, color: "#c6ff00" },
+    { label: "pH Level", value: `${sensorData.pH}`, icon: <EvStation fontSize="large" />, color: "#4CAF50" },
     { label: "Total Dissolved Solids (TDS)", value: `${sensorData.tds} ppm`, icon: <ElectricBolt fontSize="large" />, color: "#FF4081" },
   ];
 

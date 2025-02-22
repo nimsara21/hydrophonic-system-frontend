@@ -80,7 +80,7 @@ const SensorChart = () => {
         tension: 0.1,
       },
       {
-        label: "Water Temp",
+        label: "Liquid Temp",
         data: sensorData.map((entry) => entry.liquidTemp),
         borderColor: "#F4511E",
         backgroundColor: "#F4511E",
