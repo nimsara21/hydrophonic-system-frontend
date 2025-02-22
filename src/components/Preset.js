@@ -48,7 +48,7 @@ const Preset = () => {
       padding: '20px !important',
       display: 'flex',
       flexDirection: 'column',
-      backgroundColor: '#1a237e',
+      backgroundColor: '#2C3930',
       color: 'white',
       borderRadius: 3,
       gap: 2
@@ -114,14 +114,16 @@ const Preset = () => {
             px: 2,
             minWidth: '160px',
             marginBottom:5,
-            backgroundColor: '#4caf50', // Green color for better visibility
+            backgroundColor: '#A27B5C', // Green color for better visibility
             color: 'white',
             fontWeight: 'bold',
             boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
             '&:hover': {
-              backgroundColor: '#45a049',
+              backgroundColor: '#DCD7C9',
+              color:'#A27B5C',
               transform: 'translateY(-2px)',
               boxShadow: '0 6px 12px rgba(0,0,0,0.3)',
+              
             },
             transition: 'all 0.2s ease-in-out'
           }}
