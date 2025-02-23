@@ -50,10 +50,30 @@ const Dashboard = () => {
       <Stack spacing={3}>
         {/* Main Content Container */}
         <Box sx={{ 
-          display: 'flex', 
-          gap: 3,  // This creates 23px gap (MUI's spacing unit * 3)
+          display: { xs: 'block', sm: 'flex' }, // Stack on extra small screens, flex on small and above
+          gap: 3,
           alignItems: 'stretch'
         }}>
+          {/* Preset Component on top for small screens */}
+          <Box 
+            sx={{ 
+              width: '100%', 
+              maxWidth: '330px', 
+              height: '383px', 
+              order: { xs: 1, sm: 0 }, // Order changes based on screen size
+              flexShrink: 0,
+              mb: { xs: 3, sm: 0 } // Margin bottom for small screens
+            }}
+          >
+            <Card sx={{ 
+              height: '100%',
+              boxShadow: "0px 4px 20px rgba(0,0,0,0.15)",
+              borderRadius: 3
+            }}>
+              <Preset />
+            </Card>
+          </Box>
+
           {/* Sensor Cards Container */}
           <Box sx={{ 
             display: 'flex', 
@@ -74,7 +94,7 @@ const Dashboard = () => {
               >
                 <Card
                   sx={{
-                    height: '180px',  // Keep this height for each card
+                    height: '180px',
                     display: 'flex',
                     flexDirection: 'column',
                     backgroundColor: reading.color,
@@ -83,7 +103,7 @@ const Dashboard = () => {
                     textAlign: "center",
                     color: "white",
                     transition: "transform 0.3s ease-in-out",
-                    "&:hover": { transform: "scale(1.02)" }, // Reduced scale for subtlety
+                    "&:hover": { transform: "scale(1.02)" },
                   }}
                 >
                   <CardContent sx={{ 
@@ -96,7 +116,7 @@ const Dashboard = () => {
                     <Box>
                       {React.cloneElement(reading.icon, { 
                         fontSize: "large",
-                        sx: { fontSize: '2rem' } // Increased icon size
+                        sx: { fontSize: '2rem' }
                       })}
                       <Typography 
                         variant="h6" 
@@ -123,21 +143,6 @@ const Dashboard = () => {
                 </Card>
               </Box>
             ))}
-          </Box>
-
-          {/* Preset Component */}
-          <Box sx={{ 
-            width: '330px',
-            flexShrink: 0,
-            height: '383px',  // Adjusted to match sensor cards (180px * 2 + gap 23px)
-          }}>
-            <Card sx={{ 
-              height: '100%',
-              boxShadow: "0px 4px 20px rgba(0,0,0,0.15)",
-              borderRadius: 3
-            }}>
-              <Preset />
-            </Card>
           </Box>
         </Box>
 

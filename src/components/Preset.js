@@ -10,37 +10,68 @@ import {
   TextField,
   CardContent
 } from '@mui/material';
+import { database } from '../firebaseConfig'; // Adjust the path based on your folder structure
+import { ref, set } from 'firebase/database'; // Import necessary functions
 
 const Preset = () => {
   const [presets, setPresets] = useState({
     pH: 6.0,
-    tdsMin: 600,    // Added minimum TDS
-    tdsMax: 1000,   // Added maximum TDS
-    pumpStartTime: '08:00',
-    pumpEndTime: '18:00',
+    tdsMin: 600,
+    tdsMax: 1000,
+    pumpStartTime: '08', // Store only hour
+    pumpEndTime: '18',   // Store only hour
     pumpOnDuration: 15,
     pumpOffDuration: 45,
-    lightStartTime: '06:00',  // Added light cycle start
-    lightEndTime: '20:00'     // Added light cycle end
+    lightStartTime: '06', // Store only hour
+    lightEndTime: '20'    // Store only hour
   });
 
   const [open, setOpen] = useState(false);
-  const [tempPresets, setTempPresets] = useState({...presets});
+  const [tempPresets, setTempPresets] = useState({ ...presets });
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setPresets(tempPresets);
+    
+    // Save data to Firebase
+    try {
+      const presetRef = ref(database, 'presets/'); // Adjust the path as needed
+      await set(presetRef, {
+        pH: parseFloat(tempPresets.pH), // Convert to number
+        tdsMin: parseInt(tempPresets.tdsMin, 10), // Convert to number
+        tdsMax: parseInt(tempPresets.tdsMax, 10), // Convert to number
+        pumpStartTime: parseInt(tempPresets.pumpStartTime, 10), // Store hour only
+        pumpEndTime: parseInt(tempPresets.pumpEndTime, 10), // Store hour only
+        pumpOnDuration: parseInt(tempPresets.pumpOnDuration, 10), // Convert to number
+        pumpOffDuration: parseInt(tempPresets.pumpOffDuration, 10), // Convert to number
+        lightStartTime: parseInt(tempPresets.lightStartTime, 10), // Store hour only
+        lightEndTime: parseInt(tempPresets.lightEndTime, 10), // Store hour only
+      });
+      console.log("Presets saved successfully!");
+    } catch (error) {
+      console.error("Error saving presets:", error);
+    }
+
     handleClose();
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setTempPresets({
-      ...tempPresets,
-      [name]: name.includes('pump') && !name.includes('Time') ? parseInt(value) : value
-    });
+    if (name.includes('pump') || name.includes('light')) {
+      // Extract hour from time string and store as integer
+      const hour = value.split(':')[0]; // Get the hour part
+      setTempPresets({
+        ...tempPresets,
+        [name]: hour // Store only hour as a number
+      });
+    } else {
+      setTempPresets({
+        ...tempPresets,
+        [name]: name.includes('pump') ? parseInt(value) : value
+      });
+    }
   };
 
   return (
@@ -114,17 +145,16 @@ const Preset = () => {
             py: 1,
             px: 2,
             minWidth: '160px',
-            marginBottom:5,
-            backgroundColor: '#A27B5C', // Green color for better visibility
+            marginBottom: 5,
+            backgroundColor: '#A27B5C',
             color: 'white',
             fontWeight: 'bold',
             boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
             '&:hover': {
               backgroundColor: '#DCD7C9',
-              color:'#A27B5C',
+              color: '#A27B5C',
               transform: 'translateY(-2px)',
               boxShadow: '0 6px 12px rgba(0,0,0,0.3)',
-              
             },
             transition: 'all 0.2s ease-in-out'
           }}
@@ -184,7 +214,7 @@ const Preset = () => {
               name="pumpStartTime"
               label="Pump Start Time"
               type="time"
-              value={tempPresets.pumpStartTime}
+              value={tempPresets.pumpStartTime + ":00"} // Append seconds for time input
               onChange={handleChange}
               InputLabelProps={{ shrink: true }}
             />
@@ -192,7 +222,7 @@ const Preset = () => {
               name="pumpEndTime"
               label="Pump End Time"
               type="time"
-              value={tempPresets.pumpEndTime}
+              value={tempPresets.pumpEndTime + ":00"} // Append seconds for time input
               onChange={handleChange}
               InputLabelProps={{ shrink: true }}
             />
@@ -216,7 +246,7 @@ const Preset = () => {
               name="lightStartTime"
               label="Light Start Time"
               type="time"
-              value={tempPresets.lightStartTime}
+              value={tempPresets.lightStartTime + ":00"} // Append seconds for time input
               onChange={handleChange}
               InputLabelProps={{ shrink: true }}
             />
@@ -224,7 +254,7 @@ const Preset = () => {
               name="lightEndTime"
               label="Light End Time"
               type="time"
-              value={tempPresets.lightEndTime}
+              value={tempPresets.lightEndTime + ":00"} // Append seconds for time input
               onChange={handleChange}
               InputLabelProps={{ shrink: true }}
             />
