@@ -6,6 +6,7 @@ import SensorChart from "./SensorChart";
 import ControlPanel from "./ControlPanel";
 import { Opacity, LightMode, Science, ElectricBolt, EvStation, WaterDrop } from "@mui/icons-material";
 import Preset from './Preset';
+import SystemActivityGrid from "./SystemActivityGrid";
 
 const Dashboard = () => {
   const [sensorData, setSensorData] = useState({});
@@ -150,6 +151,9 @@ const Dashboard = () => {
         <Box sx={{ mt: 3 }}>
           <SensorChart />
         </Box>
+
+        <SystemActivityGrid />
+
 
         {/* Control Panel */}
         <Box sx={{ mt: 3 }}>
