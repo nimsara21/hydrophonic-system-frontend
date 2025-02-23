@@ -32,7 +32,7 @@ const Dashboard = () => {
 
   const sensorReadings = [
     { label: "Air Temperature", value: `${sensorData.airTemp} °C`, icon: <Science fontSize="medium" />, color: "#F0A04B" },
-    { label: "Water Level", value: `${sensorData.distance} cm`, icon: <Opacity fontSize="medium" />, color: "#0288D1" },
+    { label: "Water Level", value: `${sensorData.distance} %`, icon: <Opacity fontSize="medium" />, color: "#0288D1" },
     { label: "Humidity", value: `${sensorData.humidity} %`, icon: <WaterDrop fontSize="medium" />, color: "#71BBB2" },
     { label: "Liquid Temperature", value: `${sensorData.liquidTemp} °C`, icon: <LightMode fontSize="medium" />, color: "#789DBC" },
     { label: "pH Level", value: `${sensorData.pH}`, icon: <EvStation fontSize="medium" />, color: "#3D8D7A" },

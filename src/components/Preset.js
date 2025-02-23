@@ -14,7 +14,8 @@ import {
 const Preset = () => {
   const [presets, setPresets] = useState({
     pH: 6.0,
-    tds: 800,
+    tdsMin: 600,    // Added minimum TDS
+    tdsMax: 1000,   // Added maximum TDS
     pumpStartTime: '08:00',
     pumpEndTime: '18:00',
     pumpOnDuration: 15,
@@ -85,7 +86,7 @@ const Preset = () => {
           pH Level: <strong>{presets.pH}</strong>
         </Typography>
         <Typography variant="body2">
-          TDS (ppm): <strong>{presets.tds}</strong>
+          TDS Range: <strong>{presets.tdsMin} - {presets.tdsMax} ppm</strong>
         </Typography>
         <Typography variant="body2">
           Pump active Hours: <strong>{presets.pumpStartTime} - {presets.pumpEndTime}</strong>
@@ -160,11 +161,24 @@ const Preset = () => {
               inputProps={{ step: 0.1 }}
             />
             <TextField
-              name="tds"
-              label="TDS (ppm)"
+              name="tdsMin"
+              label="Minimum TDS (ppm)"
               type="number"
-              value={tempPresets.tds}
+              value={tempPresets.tdsMin}
               onChange={handleChange}
+              inputProps={{ min: 0 }}
+              fullWidth
+            />
+            <TextField
+              name="tdsMax"
+              label="Maximum TDS (ppm)"
+              type="number"
+              value={tempPresets.tdsMax}
+              onChange={handleChange}
+              inputProps={{ min: tempPresets.tdsMin }}  // Can't be less than min
+              fullWidth
+              error={tempPresets.tdsMax <= tempPresets.tdsMin}
+              helperText={tempPresets.tdsMax <= tempPresets.tdsMin ? "Max TDS must be greater than Min TDS" : ""}
             />
             <TextField
               name="pumpStartTime"
