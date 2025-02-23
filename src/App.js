@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import Dashboard from './components/Dashboard'; // Assuming you have a Dashboard component
-
+import Dashboard from './components/Dashboard';
 
 function App() {
   return (
@@ -9,7 +8,7 @@ function App() {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        minHeight: '100vh',  // Ensures the layout takes full screen height
+        minHeight: '100vh',
       }}
     >
       {/* Header Section */}
@@ -28,12 +27,12 @@ function App() {
       <Box
         sx={{
           display: 'flex',
-          flex: 1,  // Makes this section take the remaining space
-          flexDirection: 'column',
+          flex: 1,
           padding: '20px',
+          gap: 2,
         }}
       >
-        <Dashboard />  {/* Your dashboard component here */}
+        <Dashboard />
       </Box>
 
       {/* Footer Section */}
