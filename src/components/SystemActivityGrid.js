@@ -14,7 +14,6 @@ const activityDetails = [
   { key: "solenoid", label: "Solenoid", icon: <WaterDrop fontSize="large" />, color: "#279EFF" },
 ];
 
-
 const SystemActivityGrid = () => {
   const [systemActivity, setSystemActivity] = useState({});
 
@@ -91,11 +90,19 @@ const SystemActivityGrid = () => {
                     {label}
                   </Typography>
                 </Box>
-                {isActive ? (
-                  <CheckCircle sx={{ color: "#00796B", fontSize: "2rem" }} />
-                ) : (
-                  <Cancel sx={{ color: "#D32F2F", fontSize: "2rem" }} />
-                )}
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {isActive ? (
+                    <>
+                      <CheckCircle sx={{ color: "#00796B", fontSize: "2rem" }} />
+                      <Typography sx={{ marginLeft: 1, color: "#00796B" }}>Active</Typography>
+                    </>
+                  ) : (
+                    <>
+                      <Cancel sx={{ color: "#D32F2F", fontSize: "2rem" }} />
+                      <Typography sx={{ marginLeft: 1, color: "#D32F2F" }}>Inactive</Typography>
+                    </>
+                  )}
+                </Box>
               </Card>
             </Grid>
           );
