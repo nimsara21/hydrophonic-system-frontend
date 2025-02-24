@@ -67,12 +67,12 @@ const ControlPanel = () => {
   }, [sensorData]);
 
   const controlItems = [
-    { key: "waterMotor", label: "Water Motor", icon: <EvStation fontSize="large" />, color: "#1E88E5" },
-    { key: "phMotorUp", label: "pH Up", icon: <Science fontSize="large" />, color: "#4CAF50" },
-    { key: "phMotorDown", label: "pH Down", icon: <Science fontSize="large" />, color: "#F4511E" },
-    { key: "growLight", label: "Grow Light", icon: <LightMode fontSize="large" />, color: "#FFB300" },
-    { key: "fertilizer", label: "Fertilizer", icon: <ElectricBolt fontSize="large" />, color: "#FF4081" },
-    { key: "solenoid", label: "Solenoid", icon: <WaterDrop fontSize="large" />, color: "#0288D1" },
+    { key: "waterMotor", label: "Water Motor", icon: <EvStation fontSize="large" />, color: "#0766AD" },
+    { key: "phMotorUp", label: "pH Up", icon: <Science fontSize="large" />, color: "#36AE7C" },
+    { key: "phMotorDown", label: "pH Down", icon: <Science fontSize="large" />, color: "#BC7AF9" },
+    { key: "growLight", label: "Grow Light", icon: <LightMode fontSize="large" />, color: "#FAA300" },
+    { key: "fertilizer", label: "Fertilizer", icon: <ElectricBolt fontSize="large" />, color: "#DD4A48" },
+    { key: "solenoid", label: "Solenoid", icon: <WaterDrop fontSize="large" />, color: "#279EFF" },
   ];
 
   return (
@@ -105,7 +105,7 @@ const ControlPanel = () => {
                   }}
                 />
                 <Typography variant="h6" sx={{ fontWeight: "bold", marginTop: 1 }}>
-                  {controlState[item.key] ? "ON" : "OFF"}
+                  {controlState[item.key] ? "ON / AUTO" : "OFF"}
                 </Typography>
               </CardContent>
             </Card>
